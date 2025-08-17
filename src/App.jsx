@@ -212,12 +212,16 @@ if (!gameStarted) {
   }
 
     return (
-      <StartScreen
-        teamName={teamName}
-        setTeamName={setTeamName}
-        startGame={startGame}
-        feedbackMessage={feedbackMessage}
-      />
+    <StartScreen
+      teamName={teamName}
+      setTeamName={setTeamName}
+      startGame={startGame}
+      feedbackMessage={feedbackMessage}
+      hasUserPlayed={false} // acá luego podés poner tu lógica
+      leaderboardData={leaderboardData}
+      loadingLeaderboard={loadingLeaderboard}
+      formatTime={formatTime}
+    />
     );
   }
 
