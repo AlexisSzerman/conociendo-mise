@@ -16,7 +16,7 @@ import GameFinished from "./components/GameFinished";
 import GameInProgress from "./components/GameInProgress";
 import firebaseConfig from "./utils/firebaseconfig";
 
-// --- Configuración Firebase (constantes fuera del componente) ---
+// --- Configuración Firebase ---
 const appId = "conociendo-mise";
 
 function App() {
@@ -45,6 +45,9 @@ function App() {
   // --- Pistas ---
   const [showHint, setShowHint] = useState(false);
   const [hintUsedForQuestion, setHintUsedForQuestion] = useState({});
+
+  // --- Bloqueo temporal de envío de respuesta ---
+  const [isProcessingAnswer, setIsProcessingAnswer] = useState(false);
 
   // --- Inicializar Firebase ---
   useEffect(() => {
@@ -137,7 +140,7 @@ function App() {
         `artifacts/${appId}/public/data/scavengerHuntResults`
       );
       await addDoc(leaderboardRef, {
-        teamName: team,
+        teamName: team.trim(),
         elapsedTimeMs: timeMs,
         timestamp: new Date(),
         userId: userId,
@@ -152,13 +155,19 @@ function App() {
     text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
   const handleSubmitAnswer = () => {
+    if (isProcessingAnswer) return; // bloquea clicks múltiples
+
     const currentQuestion = questions[currentQuestionIndex];
     let userAnswer =
       currentQuestion.type === "multiple-choice" ? selectedOption : answerInput;
 
-    if (normalizeText(userAnswer) === normalizeText(currentQuestion.correctAnswer)) {
+    if (
+      normalizeText(userAnswer.trim()) ===
+      normalizeText(currentQuestion.correctAnswer.trim())
+    ) {
       setFeedbackMessage("¡Correcto!");
       setShowHint(false);
+      setIsProcessingAnswer(true); // bloqueo
 
       setTimeout(() => {
         if (currentQuestionIndex < questions.length - 1) {
@@ -172,6 +181,7 @@ function App() {
           setGameFinished(true);
           saveResultToFirestore(teamName, finalElapsedTime);
         }
+        setIsProcessingAnswer(false); // desbloquea
       }, 1000);
     } else {
       setFeedbackMessage("Respuesta incorrecta. ¡Inténtalo de nuevo!");
@@ -197,31 +207,18 @@ function App() {
   };
 
   // --- Render ---
-if (!gameStarted) {
-  if (hasUserPlayed) {
+  if (!gameStarted) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
-        <div className="bg-white shadow-lg rounded-xl p-8 max-w-md text-center">
-          <h2 className="text-2xl font-bold text-red-600 mb-4">¡Ya jugaste!</h2>
-          <p className="text-gray-700">
-            No puedes jugar nuevamente.
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-    return (
-    <StartScreen
-      teamName={teamName}
-      setTeamName={setTeamName}
-      startGame={startGame}
-      feedbackMessage={feedbackMessage}
-      hasUserPlayed={false} // acá luego podés poner tu lógica
-      leaderboardData={leaderboardData}
-      loadingLeaderboard={loadingLeaderboard}
-      formatTime={formatTime}
-    />
+      <StartScreen
+        teamName={teamName}
+        setTeamName={setTeamName}
+        startGame={startGame}
+        feedbackMessage={feedbackMessage}
+        hasUserPlayed={hasUserPlayed}
+        leaderboardData={leaderboardData}
+        loadingLeaderboard={loadingLeaderboard}
+        formatTime={formatTime}
+      />
     );
   }
 
@@ -254,6 +251,7 @@ if (!gameStarted) {
       hintUsedForQuestion={hintUsedForQuestion}
       handleShowHint={handleShowHint}
       feedbackMessage={feedbackMessage}
+      isProcessingAnswer={isProcessingAnswer} // pasamos a GameInProgress
     />
   );
 }

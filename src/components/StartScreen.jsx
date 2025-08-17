@@ -49,7 +49,7 @@ const StartScreen = ({
         </button>
         {hasUserPlayed && (
           <p className="mt-4 text-orange-600 font-medium">
-            Ya has participado en este juego desde este dispositivo.
+            Ya jugaste desde este dispositivo.
           </p>
         )}
         {feedbackMessage && (
