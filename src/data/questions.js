@@ -151,13 +151,53 @@ export const questions = [
         correctAnswer: "25",
         hint: "Pista: Uno mas de 90"
     },
-                            {
+    {
         id: 20,
         type: 'multiple-choice',
         question: "¿Cuantos siervos ministeriales hay?",
         options: ["10", "9", "8"],
         correctAnswer: "8",
         hint: "Pista: ¿Donde vivía el chavo?"
+    },
+    {
+        id: 21,
+        type: 'photo',
+        image: 'https://ik.imagekit.io/7nyxivlfm/conociendo-mise/Monica%20Galati.png?updatedAt=1755636612279',
+        question: "¿Quien es esta hermana?",
+        correctAnswer: "Mónica Galati",
+        hint: "Pista: Mónica..."
+    },
+    {
+        id: 22,
+        type: 'photo',
+        image: 'https://ik.imagekit.io/7nyxivlfm/conociendo-mise/Luz%20Gimenez.png?updatedAt=1755636588209',
+        question: "¿Quien es esta hermana?",
+        correctAnswer: "Luz Gimenez",
+        hint: "Pista: Luz..."
+    },
+    {
+        id: 23,
+        type: 'photo',
+        image: 'https://ik.imagekit.io/7nyxivlfm/conociendo-mise/Reynaldo%20Jarro.png?updatedAt=1755636588193',
+        question: "¿Quien es este hermano?",
+        correctAnswer: "Reynaldo Jarro",
+        hint: "Pista: ...Jarro"
+    },
+    {
+        id: 24,
+        type: 'photo',
+        image: 'https://ik.imagekit.io/7nyxivlfm/conociendo-mise/Agustina%20Farroni.png?updatedAt=1755636588197',
+        question: "¿Quien es esta hermana?",
+        correctAnswer: "Agustina Farroni",
+        hint: "Pista: ...Farroni"
+    },
+    {
+        id: 25,
+        type: 'photo',
+        image: 'https://ik.imagekit.io/7nyxivlfm/conociendo-mise/Roberto%20Schettini.png?updatedAt=1755636588194',
+        question: "¿Quien es este hermano?",
+        correctAnswer: "Roberto Schettini",
+        hint: "Pista: ...Schettini"
     },
 
 
